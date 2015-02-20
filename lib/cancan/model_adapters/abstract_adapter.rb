@@ -17,7 +17,11 @@ module CanCan
 
       # Override if you need custom find behavior
       def self.find(model_class, id)
-        model_class.find(id)
+        if model_class.respond_to?(:find_by)
+          model_class.find_by(id: id)
+        else
+          model_class.find(id)
+        end
       end
 
       # Used to determine if this model adapter will override the matching behavior for a hash of conditions.
